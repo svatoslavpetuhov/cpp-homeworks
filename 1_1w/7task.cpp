@@ -1,36 +1,72 @@
 #include <iostream>
 #include <fstream>
-using namespace std;
+#include <stdexcept>
+#include <optional>
 
-int main(int c, char* l[]){
-    if (c < 2) {
+class Fibonachi{
+    private:
+    int const first_init_, second_init_, total_count_;
+    int curr_, remaining_, next_;
+    
+    public:
+    Fibonachi(int first, int second, int count)
+    : first_init_(first), second_init_(second), total_count_(count), 
+    curr_(first), next_(second), remaining_(count) {}
+
+    void reset() {
+        curr_ = first_init_;
+        next_ = second_init_;
+        remaining_ = total_count_;
+    }
+
+    std::optional<int> next() {
+        if (remaining_ <= 0){
+            return std::nullopt;
+        }
+        const int result = curr_;
+        const int new_next = next_ + curr_;
+        curr_ = next_;
+        next_ = new_next;
+
+        --remaining_;
+
+        return result;
+    }
+};
+
+void write_secuence(std::ostream& os, Fibonachi& fi) {
+    int i = 1;
+    while (auto val = fi.next()) {
+        os << i << " " << *val << "\n" ;
+        ++i;
+    }
+
+    os << "\n";
+}
+
+int main(int argc, char* argv[]){
+    if (argc < 2) {
+        std::cerr << "не введено число" << std::endl;
         return 1;
     }
-    int n = stoi(l[1]);
 
-    ofstream outFile("outnumbers.txt");
-    if (n == 1){
-        cout << "1 1" << endl;
-    }
-    if (n == 2){
-        cout << "1 1" << endl;
-        cout << "2 1" << endl;
-    }
-    else{
-        outFile << "1 1" << endl;
-        outFile << "2 1" << endl;
-        int f0 = 1;
-        int f1 = 1;
-        int tmp = 0;
-        for (int i = 3; i <= n; ++i){
-            
+    int n = 0;
 
-            outFile << i << " " << f1 + f0 << endl;
-            tmp = f1 + f0;
-            f0 = f1;
-            f1 = tmp;
+    try {
+        n = std::stoi(argv[1]);
+    } catch(std::exception& e) {
+        std::cerr << "должно быть целое положительное число" << std::endl;
+        return 1;
     }
+    
+    if (n <= 0){
+        std::cerr << "должно быть целое положительное число" << std::endl;
+        return 1;
     }
 
-    outFile.close();
+    Fibonachi fib(1, 1, n);
+
+    write_secuence(std::cout, fib);
+
+    return 0;
 }

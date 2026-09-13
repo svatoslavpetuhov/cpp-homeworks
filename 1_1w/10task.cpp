@@ -1,25 +1,64 @@
 #include <iostream>
-#include <vector>
-#include <string>
+#include <optional>
 #include <iomanip>
-using namespace std;
+#include <vector>
+#include <stdexcept>
 
+class Harmonic {
+    private:
+    std::size_t curr_;
+    std::size_t remaining_;
+    public:
+    Harmonic(std::size_t start, std::size_t count)
+    : curr_(start), remaining_(count) {}
 
-int main(int c, char* l[]){
-    int n = stoi(l[1]);
-    if (c < 2 || n <= 0) {
+    std::optional<double> next() {
+        if (remaining_ <= 0) {
+            return std::nullopt;
+        }
+
+        const double result = 1.0/static_cast<double>(curr_);
+        ++curr_;
+        --remaining_;
+        return result;
+    }
+};
+
+int main(int argc, char* argv[]){
+    if (argc < 2) {
+        std::cerr << "не введено число" << std::endl;
         return 1;
     }
 
-    vector<double> harmonic(n);
+    int n = 0;
 
-    for (int i = 0; i < n; ++i){
-            harmonic[i] = 1.0/(i+1);
+    try {
+        n = std::stoi(argv[1]);
+    } catch(std::exception& e) {
+        std::cerr << "должно быть целое положительное число" << std::endl;
+        return 1;
+    }
+    
+    if (n <= 0){
+        std::cerr << "должно быть целое положительное число" << std::endl;
+        return 1;
     }
 
-    cout << scientific << setprecision(6);
+    Harmonic hm(1, n);
 
-    for (int i = 0; i < n; ++i){
-            cout << i+1 << " " << harmonic[i] << endl;
+    std::vector<double> my_vector(n);
+
+    for (auto& el : my_vector){
+        if(auto val = hm.next()){
+            el = *val;
+        }
     }
+
+    std::cout << std::scientific << std::setprecision(4);
+
+    for (auto el : my_vector){
+        std::cout << el << std::endl;
+    }
+
+    std::cout << "\n";
 }

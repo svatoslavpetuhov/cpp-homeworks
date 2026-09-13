@@ -1,27 +1,51 @@
 #include <iostream>
+#include <fstream>
+#include <stdexcept>
+#include <optional>
 #include <array>
-#include <string>
-using namespace std;
+#include <algorithm>
+#include <iterator>
 
-const int N_MAX = 90;
-int main(int c, char* l[]){
-    int n = stoi(l[1]);
-    if (c < 2 || n <= 0 || n > N_MAX) {
-        return 1;
+class Fibonachi{
+    private:
+    int const first_init_, second_init_, total_count_;
+    int curr_, remaining_, next_;
+    
+    public:
+    Fibonachi(int first, int second, int count)
+    : first_init_(first), second_init_(second), total_count_(count), 
+    curr_(first), next_(second), remaining_(count) {}
+
+    std::optional<int> next() {
+        if (remaining_ <= 0){
+            return std::nullopt;
+        }
+        const int result = curr_;
+        const int new_next = next_ + curr_;
+        curr_ = next_;
+        next_ = new_next;
+
+        --remaining_;
+
+        return result;
+    }
+};
+
+int main(){
+    constexpr std::size_t ARRAY_SIZE = 10;
+
+    Fibonachi fib(1, 1, ARRAY_SIZE);
+    std::array<int, ARRAY_SIZE> my_array = {};
+
+    for(auto& el : my_array) {
+        if(auto val = fib.next()){
+            el = *val;
+        }
     }
     
-    array<long long, N_MAX> fib;
+    std::copy(my_array.begin(), my_array.end(), std::ostream_iterator<int>(std::cout, " "));
+    std::cout << "\n \n" << std::endl;
+    std::cout << "Программа выполнена" << std::endl;
 
-    if (n >= 1){
-        fib[0] = 1;
-    }
-    if (n >= 2){
-        fib[1] = 1;
-    }
-    for (int i = 2; i < n; ++i){
-            fib[i] = fib[i-1] + fib[i-2];
-    }
-    for (int i = 0; i < n; ++i){
-            cout << i+1 << " " << fib[i] << endl;
-    }
+    return 0;
 }

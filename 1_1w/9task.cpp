@@ -1,25 +1,45 @@
 #include <iostream>
-#include <array>
-#include <string>
+#include <optional>
 #include <iomanip>
-using namespace std;
+#include <array>
 
-const int N_MAX = 1000;
-int main(int c, char* l[]){
-    int n = stoi(l[1]);
-    if (c < 2 || n <= 0 || n > N_MAX) {
-        return 1;
+class Harmonic {
+    private:
+    std::size_t curr_;
+    std::size_t remaining_;
+    public:
+    Harmonic(std::size_t start, std::size_t count)
+    : curr_(start), remaining_(count) {}
+
+    std::optional<double> next() {
+        if (remaining_ <= 0) {
+            return std::nullopt;
+        }
+
+        const double result = 1.0/static_cast<double>(curr_);
+        ++curr_;
+        --remaining_;
+        return result;
+    }
+};
+
+int main(){
+    constexpr std::size_t ARRAY_SIZE = 10;
+    Harmonic hm(1, ARRAY_SIZE);
+
+    std::array<double, ARRAY_SIZE> my_array = {};
+
+    for (auto& el : my_array){
+        if(auto val = hm.next()){
+            el = *val;
+        }
     }
 
-    array<double, N_MAX> harmonic;
+    std::cout << std::scientific << std::setprecision(4);
 
-    for (int i = 0; i < n; ++i){
-            harmonic[i] = 1.0/(i+1);
+    for (auto el : my_array){
+        std::cout << el << std::endl;
     }
 
-    cout << scientific << setprecision(6);
-
-    for (int i = 0; i < n; ++i){
-            cout << i+1 << " " << harmonic[i] << endl;
-    }
+    std::cout << "\n";
 }
