@@ -45,7 +45,7 @@ int main(){
     
     std::copy(my_array.begin(), my_array.end(), std::ostream_iterator<int>(std::cout, " "));
     std::cout << "\n \n" << std::endl;
-    std::cout << "Программа выполнена" << std::endl;
+    std::cout << "The program has been successfully completed" << std::endl;
 
     return 0;
 }

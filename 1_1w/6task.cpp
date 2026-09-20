@@ -42,7 +42,7 @@ void write_secuence(std::ostream& os, Generator& gen){
 
 int main(int argc, char* argv[]){
     if (argc < 2){
-        std::cerr << "Использовалось" << argv[0] << "как количество n" << std::endl;
+        std::cerr << "Used " << argv[0] << " as the value of n" << std::endl;
         return 1;
     }
 
@@ -50,12 +50,12 @@ int main(int argc, char* argv[]){
     try{
         n = std::stoi(argv[1]);
     } catch(const std::exception& e) {
-        std::cerr << "Параметр" << argv[1] << "должен быть типа int" << std::endl;
+        std::cerr << "Parameter " << argv[1] << " must be an integer" << std::endl;
         return 1;
     }
 
     if(n <=0){
-        std::cerr << "Некорректный ввод - число не положительное" << std::endl;
+        std::cerr << "Invalid input: value must be positive" << std::endl;
         return 1;
     }
 
@@ -70,7 +70,7 @@ int main(int argc, char* argv[]){
     std::ofstream file_out(text_filename);
 
     if (!file_out.is_open()){
-        std::cerr << "Файл " << text_filename << "недоступен" << std::endl;
+        std::cerr << "File " << text_filename << "unavailable" << std::endl;
         return 1;
     }
 
@@ -81,7 +81,7 @@ int main(int argc, char* argv[]){
     std::ofstream bin_out(bin_filename);
 
     if ((!text_in.is_open()) || (!bin_out.is_open()) ){
-        std::cerr << "Файл недоступен" << std::endl;
+        std::cerr << "File unavailable" << std::endl;
         return 1;
     }
 
@@ -90,6 +90,6 @@ int main(int argc, char* argv[]){
         bin_out.write(reinterpret_cast<const char*> (&buffer), sizeof(buffer));
     }
 
-    std::cout << "\n Программа выполнена успешно" << std::endl;
+    std::cout << "\n The program has been successfully completed" << std::endl;
     return 0;
 }

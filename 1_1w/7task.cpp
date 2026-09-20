@@ -46,7 +46,7 @@ void write_secuence(std::ostream& os, Fibonachi& fi) {
 
 int main(int argc, char* argv[]){
     if (argc < 2) {
-        std::cerr << "не введено число" << std::endl;
+        std::cerr << "Error: missing argument (number required)" << std::endl;
         return 1;
     }
 
@@ -55,12 +55,12 @@ int main(int argc, char* argv[]){
     try {
         n = std::stoi(argv[1]);
     } catch(std::exception& e) {
-        std::cerr << "должно быть целое положительное число" << std::endl;
+        std::cerr << "Error: argument must be a positive integer" << std::endl;
         return 1;
     }
     
     if (n <= 0){
-        std::cerr << "должно быть целое положительное число" << std::endl;
+        std::cerr << "Error: argument must be a positive integer" << std::endl;
         return 1;
     }
 

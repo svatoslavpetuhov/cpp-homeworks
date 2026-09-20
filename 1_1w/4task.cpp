@@ -51,7 +51,7 @@ int main(){
     std::ofstream file_out(text_filename);
 
     if (!file_out.is_open()){
-        std::cerr << "Файл " << text_filename << "недоступен" << std::endl;
+        std::cerr << "File " << text_filename << "unavailable" << std::endl;
         return 1;
     }
 
@@ -62,7 +62,7 @@ int main(){
     std::ofstream bin_out(bin_filename);
 
     if ((!text_in.is_open()) || (!bin_out.is_open()) ){
-        std::cerr << "Файл недоступен" << std::endl;
+        std::cerr << "File unavailable" << std::endl;
         return 1;
     }
 
@@ -71,6 +71,6 @@ int main(){
         bin_out.write(reinterpret_cast<const char*> (&buffer), sizeof(buffer));
     }
 
-    std::cout << "\n Программа выполнена успешно" << std::endl;
+    std::cout << "\n The program has been successfully completed" << std::endl;
     return 0;
 }
